@@ -288,13 +288,13 @@ We can check the arrival of the messages in the Azure IoT Hub using the IoT Hub 
 
     ```
     Monitoring events from all devices...
-    From: MachineCyclesUwp
+    From: MachineCyclesNodeJs
     {
       "errorCode": 0,
       "numberOfCycles": 8
     }
     -------------------
-    From: MachineCyclesUwp
+    From: MachineCyclesNodeJs
     {
       "errorCode": 0,
       "numberOfCycles": 9
