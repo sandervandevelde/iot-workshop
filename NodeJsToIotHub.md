@@ -21,7 +21,7 @@ In this workshop, you will learn:
 
 1. Creating an IoT Hub in the Azure Portal
 2. Creating a new NodeJs app
-3. Connect to the IoT Hub and register the app like a device
+3. Connect to the IoT Hub by registering the app like a device
 4. Generate and send dummy telemetry
 5. Check the arrival of the telemetry
 
@@ -78,8 +78,8 @@ To register a client device, you must run a script that uses a connection with s
 
 Each device that sends data to the IoT hub must be registered with a unique identity.
 
-1. Create a createdeviceid folder.
-2. Open a Node.JS console and navigate to the createdeviceid folder.
+1. Create a new createdeviceid folder on your system.
+2. Open a Node.JS console or dosbox and navigate to the createdeviceid folder.
 3. Enter the following command, and press RETURN to accept all the default options. This creates a package.json file for your application:
 ```javascript
 npm init
@@ -133,8 +133,8 @@ Now that you have registered a client device, you can create an application that
 ### Create a Client Device Application
 Now that you have registered a device, it can submit data to the IoT hub.
 
-1. Create an iotdevice folder.
-2. In the Node.JS console, navigate to the iotdevice folder.
+1. Create a new iotdevice folder on your system.
+2. In the Node.JS console or dosbox and navigate to the iotdevice folder.
 3. Enter the following command, and press RETURN to accept all the default options. This creates a package.json file for your application:
 ```javascript
 npm init
@@ -209,7 +209,7 @@ client.open(connectCallback);
 ```
 8. Save the script and close the file.
 
-
+The simulation of a machine is now written. You are ready to send telemetry.
 
 ## Generate and send dummy telemetry
 
@@ -226,7 +226,6 @@ node iotdevice.js
     ![alt tag](img/NodeJsToIotHub/nodejs-send-telemetry.png)
 
 Now we have sent telemetry to the IoT Hub. Let's check if it's arrived.
-
 
 ## Monitoring the arrival of the telemetry in Azure
 
@@ -265,7 +264,6 @@ This is the secret needed from the Azure IoT Hub.
 ### IoT Hub Explorer
 
 We can check the arrival of messages in the Azure IoT Hub. This can be done using a Command-Line tool named IoT Hub Explorer (node package).
-
 
 ### Install & run
 
