@@ -134,18 +134,18 @@ Now that you have registered a client device, you can create an application that
 Now that you have registered a device, it can submit data to the IoT hub.
 
 1. Create an iotdevice folder.
-1. In the Node.JS console, navigate to the iotdevice folder.
-2. Enter the following command, and press RETURN to accept all the default options. This creates a package.json file for your application:
+2. In the Node.JS console, navigate to the iotdevice folder.
+3. Enter the following command, and press RETURN to accept all the default options. This creates a package.json file for your application:
 ```javascript
 npm init
 ```
-3. Enter the following command to install the Azure IoT device and AMQP protocol packages:
+4. Enter the following command to install the Azure IoT device and AMQP protocol packages:
 ```javascript
 npm install azure-iot-device azure-iot-device-amqp
 ```
-4. Create an iotdevice.js file in the iotdevice folder.
-4. Use a text editor to edit the iotdevice.js file.
-5. Modify the script to set the connStr variable to reflect the device connection string for the MachineCyclesNodeJs device (which you copied to the clipboard in the previous exercise), as shown here:
+5. Create an iotdevice.js file in the iotdevice folder.
+6. Use a text editor to edit the iotdevice.js file.
+7. Modify the script to set the connStr variable to reflect the device connection string for the MachineCyclesNodeJs device (which you copied to the clipboard in the previous exercise), as shown here:
 ```javascript
 'use strict';
 
@@ -207,7 +207,7 @@ console.log("\x1b[0m", '==================');
 
 client.open(connectCallback);
 ```
-6. Save the script and close the file.
+8. Save the script and close the file.
 
 
 
