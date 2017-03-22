@@ -328,6 +328,17 @@ In [UWP app](UwpToIotHub.md) we wrote and executed a UWP which send some telemet
  
 We have now successfully sent some telemetry which is picked up and handled. In the end, commands were received and acted on.
 
+### Handle commands in the javascript Node.js app
+
+The javascript client is instrumented to fall into an error state already. Every fifth message results in an error state.
+
+Just wait and see how the error state arrives at the IoT Hub and within two minutes the command is generated to 'fix' the machine.
+
+Again, after five successfull cycles, the app will generate another error state.
+
+## Conclusion
+
+
 Receiving commands from Azure completes the main part of the workshop.
 
 We hope you did enjoy working with the Azure IoT Platform, as much as we did. Thanks for getting this far!
