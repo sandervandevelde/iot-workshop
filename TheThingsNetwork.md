@@ -18,6 +18,7 @@ In this chapter you will configure the The Things Uno with two sensors, connect 
 7. Bridge software between TTN and Azure [TtnAzureBridge](https://github.com/sandervandevelde/TtnAzureBridge) (or [as zip](https://aka.ms/workshopiot))
 8. [IoT Hub Explorer](https://www.npmjs.com/package/iothub-explorer) _(for Command-Line interface based usage; see below for installation steps)_ or [Device Explorer](https://github.com/Azure/azure-iot-sdks/releases). _(Scroll down to the Downloads section to locate the download link for the SetupDeviceExplorer.msi installer)_
 9. Seeed Grove Led Bar [software library](https://github.com/Seeed-Studio/Grove_LED_Bar) (or [as zip](https://aka.ms/workshopiot))
+10. Modern browsers like Edge, Chrome and Firefox are preferred
 
 ## Connect your device
 
@@ -209,7 +210,7 @@ Now we have a running Arduino with some basic logic. Let's send some messages us
 
 Follow the steps to create an application and register your device.
 
-1. Log into the [The Things Network dashboard](https://console.thethingsnetwork.org). You will be asked to provide TTN credentials if needed
+1. Log into the [The Things Network dashboard](https://console.thethingsnetwork.org) using a modern browser like Chrome. You will be asked to provide TTN credentials if needed
 2. A selection between Applications maintenance and Gateways maintenance must be made. Choose **Applications**
 
     ![alt tag](img/TheThingsNetwork/TTN-app-gtwy.png)
