@@ -125,9 +125,13 @@ A few steps below we will create an Azure Functions triggered by an Event Hub. A
 
 *Note: The Event Hub itself has Shared access policies too. We do not need to remember those, just the one of the policy of the namespace!.*
 
-### Connecting the hubs to Azure Stream Analytics job input and output
+## Connecting the hubs to Azure Stream Analytics job input and output
 
-As shown above, the Azure Stream Analytics job will connect the IoT Hub and the Event Hub. Both are created now. Follow these steps to define the input and the output of Azure Stream Analytics.
+Let's and an input source and output sink to the Stream Analytics job.
+
+### Connecting the hubs to Azure Stream Analytics job input
+
+As shown above, the Azure Stream Analytics job will connect to the IoT Hub. Follow these steps to define the input of Azure Stream Analytics.
 
 1. On the left, select `Resource groups`. A list of resource groups is shown
 
@@ -149,7 +153,13 @@ As shown above, the Azure Stream Analytics job will connect the IoT Hub and the 
     ![alt tag](img/azure-stream-analytics-add-input.png)
 
 8. Select `Create`
-9. The input will be created and the connection to the hub is tested automatically. 
+
+The input will be created and the connection to the hub is tested automatically. 
+
+### Connecting the hubs to Azure Stream Analytics job output
+
+As shown above, the Azure Stream Analytics job will connect to the Event Hub. Follow these steps to define the output of Azure Stream Analytics.
+
 10. Select `Outputs`
 11. Select `Add`. A dialog to add a new output is shown
 
@@ -160,11 +170,11 @@ As shown above, the Azure Stream Analytics job will connect the IoT Hub and the 
 
     ![alt tag](img/azure-stream-analytics-add-output.png)
 
-14. Change the Format into `Array`. *Note: Our output will generate JSON. And multiple lines of JSON are formatted as Array, not as separated lines*
+14. Change the Format into `Array`. *Note: Our output will generate JSON. And multiple lines of JSON are NOW formatted as Array, NOT as separated lines. Pleasse double check this again*
 15. Select `Create`
 16. The Output will be created and the connection to the hub is tested automatically. 
 
-The input and output are now defined. Let's add the Azure Stream Analytics job query.
+The output is now defined. Let's add the Azure Stream Analytics job query to connect input and output.
 
 ### Write the Azure Stream Analytics job query
 

@@ -67,9 +67,28 @@ Unlike event hubs, all devices that use an IoT hub must be individually register
 
 To register a client device, you must run a script that uses a connection with sufficient permissions to access the hub registry. In this case, you will use the built-in iothubowner shared access policy to accomplish this.
 
-1. In the Azure portal, browse to the IoT Hub you created previously.
-2. In the blade for your IoT Hub, click Shared access policies.
-3. In the Shared access policies blade, click the iothubowner policy, and then copy the connection string-primary key for your IoT Hub to the clipboard – you will need this later.
+1. Check the Azure portal. The resource group and the IoT Hub should be created by now (otherwise, we were unable to send duty cycles information to it)
+
+    ![alt tag](img/UwpToIotHub/azure-notifications-iothub.png)
+
+2. On the left, select `Resource groups`. A list of resource groups is shown
+
+    ![alt tag](img/UwpToIotHub/azure-resource-groups.png)
+
+3. Select the resource group `IoTWorkshop-rg`. It will open a new blade with all resources in this group
+4. Select the IoT Hub `IoTWorkshop-ih`. It will open a new blade with the IoT Hub
+
+    ![alt tag](img/UwpToIotHub/azure-iot-hub-initial.png)
+
+5. The IoTHub has not received any messages yet. Check the general settings for `Shared access policies`
+
+    ![alt tag](img/UwpToIotHub/azure-iot-hub-share-access-policy.png)
+
+6. Navigate to the 'iothubowner' policy and **write down** this `Connection String-Primary Key`
+
+    ![alt tag](img/UwpToIotHub/azure-iothubowner-policy.png)
+
+These is the secret from the IoT Hub, needed to connect our NodeJs client and monitor it later on
 
 *Note: For more information about access control for IoT hubs, see [Access control](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-security/) in the "Azure IoT Hub developer guide."*
 
@@ -78,25 +97,30 @@ To register a client device, you must run a script that uses a connection with s
 
 Each device that sends data to the IoT hub must be registered with a unique identity.
 
-1. Create a new createdeviceid folder on your system.
-2. Open a Node.JS console or dosbox and navigate to the createdeviceid folder.
-3. Enter the following command, and press RETURN to accept all the default options. This creates a package.json file for your application:
+1. `Create` a new "createdeviceid" folder on your system.
+2. `Open` a Node.JS console or dosbox and navigate to the createdeviceid folder.
+3. Enter the following `command`, and press RETURN to accept all the default options. This creates a package.json file for your application:
+
 ```javascript
 npm init
 ```
-4. Enter the following command to install the Azure IoT Hub package:
+
+4. Enter the following `command` to install the Azure IoT Hub package:
+
 ```javascript
 npm install azure-iothub
 ```
-5. Create a createdeviceid.js file in the createdeviceid folder.
-6. Use a text editor to edit the createdeviceid.js file.
-7. Modify the script to set the connStr variable to reflect the shared access policy connection string for your IoT Hub, as shown here:
+
+5. Create a `createdeviceid.js` file in the createdeviceid folder.
+6. Use a text editor to `edit` the "createdeviceid.js" file.
+7. Modify the file with the following script and set the `connStr variable` to reflect the shared access policy connection string for your IoT Hub, as shown here:
+
 ```javascript
 'use strict';
 var iothub = require('azure-iothub');
 var connStr = '<IOT-HUB-CONNECTION-STRING>';
 var registry = iothub.Registry.fromConnectionString(connStr);
-var device = new iothub.Device(null);
+var device = new iothubDevice(null);
 device.deviceId = 'MachineCyclesNodeJs';
 
 registry.create(device, function(err, deviceInfo, res) {
@@ -114,15 +138,21 @@ function printDeviceInfo(err, deviceInfo, res) {
   }
 }
 ```
-8. Save the script and close the file.
-9. In the Node.JS console window, enter the following command to run the script:
+
+8. `Save` the script and close the file.
+9. In the Node.JS console window, `enter` the following command to run the script:
+
 ```javascript
 node createdeviceid.js
 ```
-10. Verify that the script registers a device with the ID MachineCyclesNodeJs.
-11. In the Azure portal, on the blade for your IoT Hub, click the Overview tab and then at the top of the blade, click Devices and verify that MachineCyclesNodeJs is listed.
-11. Click MachineCyclesNodeJs and view the device-specific keys and connection strings that have been generated. Then copy the connection string-primary key for MachineCyclesNodeJs to the clipboard. You will use this in the next exercise.
 
+10. `Verify` that the script registers a device with the ID MachineCyclesNodeJs.
+11. In the Azure portal, on the blade for your IoT Hub, `click` the Overview tab. 
+12. then at the top of the blade, `click` Devices and verify that MachineCyclesNodeJs is listed.
+13. `Click` MachineCyclesNodeJs and view the device-specific keys and connection strings that have been generated. 
+14. Then `copy` the connection string-primary key for MachineCyclesNodeJs to the clipboard. You will use this in the next exercise.
+
+We have created a registration for a device simulation. Now let's build the actual device simulation.
 
 ## Creating a new NodeJs App
 
@@ -133,19 +163,24 @@ Now that you have registered a client device, you can create an application that
 ### Create a Client Device Application
 Now that you have registered a device, it can submit data to the IoT hub.
 
-1. Create a new iotdevice folder on your system.
-2. In the Node.JS console or dosbox and navigate to the iotdevice folder.
+1. `Create` a new "iotdevice" folder on your system.
+2. `Open` the Node.JS console or dosbox and navigate to the iotdevice folder.
 3. Enter the following command, and press RETURN to accept all the default options. This creates a package.json file for your application:
+
 ```javascript
 npm init
 ```
+
 4. Enter the following command to install the Azure IoT device and AMQP protocol packages:
+
 ```javascript
 npm install azure-iot-device azure-iot-device-amqp
 ```
-5. Create an iotdevice.js file in the iotdevice folder.
-6. Use a text editor to edit the iotdevice.js file.
-7. Modify the script to set the connStr variable to reflect the device connection string for the MachineCyclesNodeJs device (which you copied to the clipboard in the previous exercise), as shown here:
+
+5. Create an `iotdevice.js` file in the iotdevice folder.
+6. Use a text editor to `edit` the "iotdevice.js" file.
+7. Modify the script with the following script and set the `connStr variable` to reflect the *device connection string* for the MachineCyclesNodeJs device (which you copied to the clipboard in the previous exercise), as shown here:
+
 ```javascript
 'use strict';
 
@@ -207,7 +242,8 @@ console.log("\x1b[0m", '==================');
 
 client.open(connectCallback);
 ```
-8. Save the script and close the file.
+
+8. `Save` the script and close the file.
 
 The simulation of a machine is now written. You are ready to send telemetry.
 
@@ -217,11 +253,13 @@ The simulation of a machine is now written. You are ready to send telemetry.
 
 Now you can run your client application to send data to the IoT hub.
 
-1. In the Node.JS console window, enter the following command to run the script:
+1. In the Node.JS console window, enter the following `command` to run the script:
+
 ```javascript
 node iotdevice.js
 ```
-2. Observe the script running as it starts to submit device readings.
+
+2. `Observe` the script running as it starts to submit device readings.
 
     ![alt tag](img/NodeJsToIotHub/nodejs-send-telemetry.png)
 
@@ -231,35 +269,7 @@ Now we have sent telemetry to the IoT Hub. Let's check if it's arrived.
 
 ![alt tag](img/NodeJsToIotHub/Picture05-NodeJs-overview.png)
 
-We can monitor the arrival of telemetry only if we have enough rights to look into the IoT Hub. So first we collect secrets.
-
-### Collect Azure IoT Hub secrets
-
-The integration requires an Azure IoT Hub Shared access policy key name with `Registry read, write and Device connect` permissions. In this example, we use the **iothubowner** policy which has these permissions enabled by default.
-
-1. Check the Azure portal. The resource group and the IoT Hub should be created by now (otherwise, we were unable to send duty cycles information to it)
-
-    ![alt tag](img/NodeJsToIotHub/azure-notifications-iothub.png)
-
-2. On the left, select `Resource groups`. A list of resource groups is shown
-
-    ![alt tag](img/NodeJsToIotHub/azure-resource-groups.png)
-
-3. Select the resource group `IoTWorkshop-rg`. It will open a new blade with all resources in this group
-4. Select the IoT Hub `IoTWorkshop-ih`. It will open a new blade with the IoT Hub
-
-    ![alt tag](img/NodeJsToIotHub/azure-iot-hub-initial.png)
-
-5. The IoTHub has not received any messages yet. Check the general settings for `Shared access policies`
-
-    ![alt tag](img/NodeJsToIotHub/azure-iot-hub-share-access-policy.png)
-
-6. **Write down** the `name` of the IoT Hub eg. `IoTWorkshop-ih`
-7. Navigate to the 'iothubowner' policy and **write down** this `Connection String-Primary Key`
-
-    ![alt tag](img/NodeJsToIotHub/azure-iothubowner-policy.png)
-
-This is the secret needed from the Azure IoT Hub.
+We can monitor the arrival of telemetry only if we have enough rights to look into the IoT Hub. We collected the IoT Hub Policy secrets already.
 
 ### IoT Hub Explorer
 
@@ -289,16 +299,18 @@ We can check the arrival of the messages in the Azure IoT Hub using the IoT Hub 
     From: MachineCyclesNodeJs
     {
       "errorCode": 0,
-      "numberOfCycles": 8
+      "numberOfCycles": 2
     }
     -------------------
     From: MachineCyclesNodeJs
     {
       "errorCode": 0,
-      "numberOfCycles": 9
+      "numberOfCycles": 3
     }
     -------------------
     ```
+
+The cycle information is arriving.
 
 ## Conclusion
 
