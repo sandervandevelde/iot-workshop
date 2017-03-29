@@ -401,6 +401,9 @@ Notice that we have full control over telemetry. We know which device has sent f
 
 Receiving basic telemetry in Azure completes this part of the workshop. You are now ready to do something exciting with this telemetry. 
 
-Let's start [Sending back commands to the device to fix the issue](Commands.md)
+1. Let's start passing commands back to actual devices or simulated devices
+    1. [Passing commands back to a The Things Uno device](CommandsTTN.md)
+    2. [Passing commands back to a UWP app device simulation](CommandsUwp.md)
+    3. [Passing commands back to a NodeJs app device simulation](CommandsNodeJs.md)
 
 ![alt tag](img/logos/innovatos-digitalshockwaves-2017.png)

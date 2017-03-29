@@ -5,7 +5,7 @@ This is an example of how downlink commands are sent back to a device. In this w
 
 ![alt tag](img/arch/azure-telemetry-pipeline-commands.png)
 
-This part of the workshop supports both to the [TTN Node](TheThingsNetwork.md) and to the [UWP app](UwpToIotHub.md). 
+This part of the workshop supports the [TTN Node](TheThingsNetwork.md). 
 
 *Note: In this workshop, we will create uniquely named Azure resources. The suggested names could be reserved already.*
 
@@ -13,18 +13,15 @@ This part of the workshop supports both to the [TTN Node](TheThingsNetwork.md) a
 
 1. Azure account [create here](https://azure.microsoft.com/en-us/free/) _(Azure passes will be present for those who have no Azure account (please check your email for final confirmation))_
 2. A running TTN node connected to the TTN network and a running TTN bridge on your PC and connected to an IoT Hub
-3. or... a UWP app which simulates a machine running duty cycles
-4. A combination of Azure IoT Hub, Stream Analytics job, Event Hub and Azure Function which are waiting for analyzed telemetry coming from the devices
-5. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in
+3. A combination of Azure IoT Hub, Stream Analytics job, Event Hub and Azure Function which are waiting for analyzed telemetry coming from the devices
+4. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in
 
 ### Steps to perform in this part of the workshop
 
 At the end of this part of the workshop, the following steps are performed
 
-1. Creating commands to send back
-2. Handle commands in the devices
-   1. Handle commands in the TTN Node
-   2. Handle commands in a UWP app
+1. Creating commands to send back in the Azure Function
+2. Handle commands in the TTN Node
 
 ## Sending back commands for devices which are in a faulty state
 
@@ -153,8 +150,6 @@ Now, the Azure Function is ready to receive data about devices which simulate 'f
 
 Let's bring your device in a faulty state and see how the Azure IoT Platforms sends back a command to repair it.
 
-You can work with TTN devices or with the UWP app which simulates a device.
-
 ### Handle commands in the TTN Node
 
 In [TTN Node](TheThingsNetwork.md), we assembled a TTN node and we put a sketch (source code) on it. Here we will add more logic to the node.
@@ -215,129 +210,9 @@ In [TTN Node](TheThingsNetwork.md), we assembled a TTN node and we put a sketch 
 
 12. And in the end, the device will lit the light of the LED again. The 'machine' is now running again
 
-We have now gone full circle: the machine on hold, simulated by the TTN Node, is running again and it's updating the machine cycles number again. And again, it's running without an error state.
-
-### Handle commands in a UWP app
-
-![alt tag](img/arch/Picture04-UWP-overview.png)
-
-In [UWP app](UwpToIotHub.md) we wrote and executed a UWP which send some telemetry. Here we will add more logic to the node so we can receive commands.
-
-1. Go to the UWP project
-2. `Open` the file named 'AzureIoTHub.cs'
-3. The class in this file also contains a method 'ReceiveCloudToDeviceMessageAsync' which is not that smart. It can only receive text. We want to receive a number (bytes) from the Azure IoT Platform
-4. `Add` a Receive method with the following code
-
-    ```csharp
-    public static async Task<byte[]> ReceiveCloudToDeviceBytes()
-    {
-        var deviceClient = DeviceClient.
-              CreateFromConnectionString(deviceConnectionString, TransportType.Amqp);
-
-        while (true)
-        {
-            var receivedMessage = await deviceClient.ReceiveAsync();
-
-            if (receivedMessage != null)
-            {
-                var bytes = receivedMessage.GetBytes();
-
-                await deviceClient.CompleteAsync(receivedMessage);
-
-                return bytes;
-            }
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
-        }
-    }
-    ```
-    
-5. Now, the method to receive messages from the cloud to this devices is waiting for bytes
-6. Next, `Open` the XAML of form 'MainPage.xaml'
-7. `Add` the following line of code. It add a button to the screen
-
-    ```xml
-    <Button Name="BtnReceive" Content="Wait for commands" Margin="5" FontSize="60" Click="btnReceive_Click" />
-    ```
-
-8. Finally, `add` the following code-behind on 'MainPage.xaml.cs'. This is the logic which will be executed after pushing the new button
-
-    ```csharp
-    private async void btnReceive_Click(object sender, RoutedEventArgs e)
-    {
-        BtnReceive.IsEnabled = false;
-        while (true)
-        {
-            try
-            {
-                var bytes = await AzureIoTHub.ReceiveCloudToDeviceBytes();
-
-                if (bytes != null && bytes.Length > 0 && bytes[0] >= 42)
-                {
-                    await ShowMessage($"Command {Convert.ToInt32(bytes[0])} (Started running again at {DateTime.Now:hh:mm:ss})");
-                    _errorCode = 0;
-                    BtnBreak.IsEnabled = true;
-
-                    txbTitle.Foreground = new SolidColorBrush(Colors.DarkOliveGreen);
-                }
-            }
-            catch (Exception ex)
-            {
-                BtnReceive.IsEnabled = true;
-                await ShowMessage(ex.Message);
-            }
-        }
-    }
-    ```
-
-9. We only have to push the button once. After that, when a command is received. We 'start' the machine again
-10. The changes in the code are done. `recompile` to check the code will build successfully
-11. Restart the UWP app, press `Send cycle updates` a couple of times
-
-    ![alt tag](img/commands/UWP-app-sending-duty-cycles.png)
-
-12. The cycles are normal behavior. And these will not be picked up by the Stream Analytics job (which is listening for the error status)
-13. To receive commands, we have to wait for them to be received from the IoT Hub. Press `Wait for commands` *note: the communication with the IoT Hub is based on a communication protocol named AMQP by default. This makes communication very efficient, we are not polling every few seconds and thus saving bandwidth*
-
-    ![alt tag](img/commands/UWP-app-command-waiting.png)
-
-14. Now we 'break' the machine by pressing `Break down`. *Note: the title will be shown in a red color*
-
-    ![alt tag](img/commands/UWP-app-break-down.png)
-
-15. finally, we send telemetry, a few times to notify the Azure IoT platform (using the IoT Hub) that the machine in in a faulty state
-16. In the UWP app, again press `Send cycle updates` a couple of times. Error code 99 is shown
-
-    ![alt tag](img/commands/UWP-app-send-faulty-state.png)
- 
-17. The telemetry is sent to the IoTHub which passes the data to the StreamAnalytics job. If the error codes arrive multiple times within the same time frame (the hopping window is two minutes), an event is constructed and passed to the Azure Function.
-18. The Azure function will show the execution of the method
-
-    ```
-    2017-01-08T15:45:07.169 Function started (Id=91558474-1e83-4ce5-b9ca-81b87f22dff4)
-    2017-01-08T15:45:07.169 Stream Analytics produced [{"count":3,"deviceid":"MachineCyclesUwp"}]
-    2017-01-08T15:45:07.169 1 messages arrived.
-    2017-01-08T15:45:07.169 Machine restart command processed after 3 errors for MachineCyclesUwp
-    2017-01-08T15:45:07.169 Function completed (Success, Id=91558474-1e83-4ce5-b9ca-81b87f22dff4)
-    ```
-
-19. Notice that the event is actually a JSON array of messages (containing one message). And correct machine is restarted
-20. Now look at the UWP app, the machine is restart, just a second or so after the command was sent by the Azure Function *Note: the title is no longer red*
-
-    ![alt tag](img/commands/UWP-app-restart.png)
- 
-We have now successfully sent some telemetry which is picked up and handled. In the end, commands were received and acted on.
-
-### Handle commands in the javascript Node.js app
-
-The javascript client is instrumented to fall into an error state already. Every fifth message results in an error state.
-
-Just wait and see how the error state arrives at the IoT Hub and within two minutes the command is generated to 'fix' the machine.
-
-Again, after five successfull cycles, the app will generate another error state.
+We have now gone full circle: the machine on hold (in an error state), simulated by the TTN Node, is running again and it's updating the machine cycles number again. And again, it's running without an error state.
 
 ## Conclusion
-
 
 Receiving commands from Azure completes the main part of the workshop.
 

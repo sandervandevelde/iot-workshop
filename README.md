@@ -35,11 +35,14 @@ _[1] times are subject to changes_
 The workshop consists of several chapters. The first two chapters will guide you through the essentials we want you to get your hands on. The other chapters are optional/extra if you have time left.
 
 1. Connecting a device to the Azure IoT Platform
-    1. [Getting started with the The Things Uno and The Things Network](TheThingsNetwork.md)
+    1. [Getting started with the The Things Uno device and The Things Network](TheThingsNetwork.md)
     2. [Connecting to an IoT Hub using a UWP app device simulation](UwpToIotHub.md)
     3. [Connecting to an IoT Hub using a NodeJs app device simulation](NodeJsToIotHub.md)
 2. [Receiving and handling telemetry in Azure](Azure.md)
-3. [Passing commands back to a device](Commands.md)
+3. Passing commands back to actual devices or simulated devices
+    1. [Passing commands back to a The Things Uno device](CommandsTTN.md)
+    2. [Passing commands back to a UWP app device simulation](CommandsUwp.md)
+    3. [Passing commands back to a NodeJs app device simulation](CommandsNodeJs.md)
 4. Bonus
    1. [Deploying The Things Network Bridge to Azure as a WebJob](Webjob.md)
    2. [Add basic monitoring to the IoT platform](IoTPatformMonitoring.md)

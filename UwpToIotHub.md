@@ -14,9 +14,8 @@ This is an example integration between a UWP app and Azure IoT Hub. This integra
 2. Visual Studio 2015 [Community edition](https://www.visualstudio.com/vs/community/) or higher
 3. Universal Windows App Development Tools [Windows SDK](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)
 4. Visual Studio Extension [Connected Service for Azure IoT Hub](https://visualstudiogallery.msdn.microsoft.com/e254a3a5-d72e-488e-9bd3-8fee8e0cd1d6)
-5. Node.js [https://nodejs.org/en/](https://nodejs.org/en/). _(We prefer Version 6)_
+5. App for checking out the Azure IoT Platform [Device Explorer](https://github.com/fsautomata/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md) _(for GUI based usage; see below for installation steps)_  
 6. Azure account [create here](https://azure.microsoft.com/en-us/free/) _([Azure passes](https://www.microsoftazurepass.com/howto) will be present for those who have no Azure account (please check your email for final confirmation))_
-7. [IoT Hub Explorer](https://www.npmjs.com/package/iothub-explorer) _(for Command-Line interface based usage; see below for installation steps)_ or [Device Explorer](https://github.com/fsautomata/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md) _(for GUI based usage; see below for installation steps)_  
 
 ### Objectives
 
@@ -299,7 +298,7 @@ This is the secret needed from the Azure IoT Hub.
 
 We can check the arrival of messages in the Azure IoT Hub. This can be done using a UI app named Device Explorer or using a Command-Line tool named IoT Hub Explorer. `Choose one below` 
 
-### Monitoring using UI
+### Monitoring using Device Explorer
 
 We can check the arrival of the messages in the Azure IoT Hub using the Device Explorer.
 
@@ -325,41 +324,6 @@ To run the Device Explorer tool, double-click the DeviceExplorer.exe file in Win
     1/5/2017 9:46:18 PM> Device: [MachineCyclesUwp], Data:[{"errorCode":0,"numberOfCycles":1}]
     1/5/2017 9:46:19 PM> Device: [MachineCyclesUwp], Data:[{"errorCode":0,"numberOfCycles":2}]
     1/5/2017 9:46:20 PM> Device: [MachineCyclesUwp], Data:[{"errorCode":0,"numberOfCycles":3}]
-    ```
-
-### Monitoring using Command-line
-
-We can check the arrival of the messages in the Azure IoT Hub using the IoT Hub Explorer. This tool is Command-Line based, please check the installation requirements. 
-
-*Note : See the [full example](https://www.npmjs.com/package/iothub-explorer) for more options of this tool.*
-
-1. Create a new folder eg. `c:\iothubexplorer`
-2. In a dos-box (press Windows button-R, type CMD and enter), navigate to the new folder `c:\iothubexplorer`
-3. In this folder, run the following command `npm install -g iothub-explorer@latest` in your command-line environment, to install the latest (pre-release) version of the iothub-explorer tool
-4. Login to the IoT Hub Explorer by supplying your *remembered* IoT Hub `Connection String-primary key` using the command `iothub-explorer login "[your connection string]"`
-5. A session with the IoT Hub will start and it will last for approx. one hour:
-
-    ```
-    Session started, expires on Thu Jan 05 2017 22:53:55 GMT+0100 (W. Europe Standard Time)
-    ```
-
-6. To monitor the device-to-cloud messages from a device, use the following command `iothub-explorer monitor-events --login [your connection string]` and `fill in` your *remembered* IoT Hub 'Connection String-primary key'
-7. All devices are monitored now. This will result in the following messages
-
-    ```
-    Monitoring events from all devices...
-    From: MachineCyclesUwp
-    {
-      "errorCode": 0,
-      "numberOfCycles": 8
-    }
-    -------------------
-    From: MachineCyclesUwp
-    {
-      "errorCode": 0,
-      "numberOfCycles": 9
-    }
-    -------------------
     ```
 
 ## Conclusion
