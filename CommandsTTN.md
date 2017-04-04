@@ -31,7 +31,7 @@ In the [previous workshop](AzureTTN.md), we passed the telemetry from the device
 
 In this workshop, we will react on these devices by sending them a command to 'repair themselves'. 
 
-### Updating the Azure Function with sending command logic
+### Updating the C# Azure Function with sending command logic
 
 First, we update the Azure Function. For each device which is passed on, we send a command back.
 
@@ -139,8 +139,8 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
     ```
 
 18. There is just one thing left to do: we have to fill in the Azure IoT Hub security policy connection string. To send commands back, we have to proof we are authorized to do this
-19. In the Azure Function, replace '[IOT HUB connection string]' your *remembered* IoT Hub `Connection String-primary key`
-20. Recompile again succesfully
+19. In the Azure Function, replace '[IOT HUB connection string]' with your *remembered* IoT Hub `Connection String-primary key`
+20. Selsect `Save` and recompile again succesfully
 
 Now, the Azure Function is ready to receive data about devices which simulate 'faulty machines'. And it can send commands back to 'repair' the 'machines'.
 

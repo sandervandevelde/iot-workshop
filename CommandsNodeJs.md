@@ -31,7 +31,7 @@ In the [previous workshop](AzureNodeJs.md), we passed the telemetry from the dev
 
 In this workshop, we will react on these devices by sending them a command to 'repair themselves'. 
 
-### Updating the Azure Function with sending command logic
+### Updating the NodeJs Azure Function with sending command logic
 
 First, we update the Azure Function. For each device which is passed on, we send a command back.
 
@@ -57,7 +57,7 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
         var Client = require('azure-iothub').Client;
         var Message = require('azure-iot-common').Message;
 
-        var connectionString = "[IoT Hub IoTHubOwner ConnectionString]";
+        var connectionString = "[IOT HUB connection string]";
         var serviceClient = Client.fromConnectionString(connectionString);
     
         function printResultFor(op) {
@@ -102,7 +102,7 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
     ![alt tag](img/azure-function-app-eventhubtrigger-logs.png)
 
 8. A 'Logs' panel is shown. This 'Logs' panel works like a trace log.
-9. If you try to run this code, you will notice that compilation fails. This is not that surprising: we are using certain libraries that Azure Functions has no knowledge of. Yet!
+9. Because we are writing JavaScript, there will be no warning the code above has some flaws. We need to add a connection string and extra libraries. Let's start with the extra libraries.
 10. Press the `View Files` button to 'unfold' the pane which shows a directory tree of all files.
 
     ![alt tag](img/commands/azure-function-app-view-files.png)
@@ -138,18 +138,26 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
     }
     ```
 
-16. Select `Save`. The changed C# code will be recompiled immediately *Note: you can press 'save and run', this will actually run the function, but an empty test will be passed (check out the 'Test' option to the right for more info)*
-17. In the 'Logs' panel, just below 'Code', `verify the outcome` of the compilation
+16. Select `Save`.
+17. We have added the extra dependencies. Unfortunately the libraries involved are not loaded yet. We have to tell NodeJs to load the new libraries. *Note: you can press 'save and run', this will actually try to run the function, but an empty test will be passed (check out the 'Test' option to the right for more info)*
+18. To the left, press the `Function app settings` button
 
-    ```
-    2017-01-08T14:49:46.794 Packages restored.
-    2017-01-08T14:49:47.113 Script for function 'IoTWorkshopEventHubFunction' changed. Reloading.
-    2017-01-08T14:49:47.504 Compilation succeeded.
-    ```
+    ![alt tag](img/commands/azure-function-app-settings.png)
 
-18. There is just one thing left to do: we have to fill in the Azure IoT Hub security policy connection string. To send commands back, we have to proof we are authorized to do this
-19. In the Azure Function, replace '[IOT HUB connection string]' your *remembered* IoT Hub `Connection String-primary key`
-20. Recompile again succesfully
+19. We want to run a NodeJs command. Select the `Go to Kudu` option
+
+    ![alt tag](img/commands/azure-function-app-kudu.png)
+
+20. A new tab page is shown. In it the file structure of the NodeJs function is shown. And we get an convenient Dosprompt
+21. navigate to the map `D:\home\site\wwwroot\IoTWorkshopEventHubFunction` using the files shown in the upper half of the screen
+22. Run `npm install` in the console. *Note: This could take some time*
+
+    ![alt tag](img/commands/azure-function-app-kudu-npm-install.png)
+
+23. Once the cursor is available again, close the Kudu screen and return to the NodeJs function
+24. There is just one thing left to do: we have to fill in the Azure IoT Hub security policy connection string. To send commands back, we have to proof we are authorized to do this
+25. In the Azure Function, replace '[IOT HUB connection string]' with your *remembered* IoT Hub `Connection String-primary key`
+26. Select `Save` again 
 
 Now, the Azure Function is ready to receive data about devices which simulate 'faulty machines'. And it can send commands back to 'repair' the 'machines'.
 
