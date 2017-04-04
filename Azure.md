@@ -232,7 +232,9 @@ Starting an Azure Stream Analytics job will take some time. After starting, all 
 
 ![alt tag](img/msft/Picture11handle-event-using-azure-functions.png)
 
-Follow these steps to create an Azure Function App. An Azure function is actually a real function, a couple of lines of code, which is triggered by certain events and it can output the result of the code to other services. Azure Functions run 'serverless': you just write and upload your code and only pay for the number of times it is executed, the compute time and the amount of memory used. Our Azure Function will be triggered by a new event in the Event Hub. The Azure Function app is the container of Azure Functions.
+Filtered and transformed messages now arrive at the Event Hub. Each time a message arrives, the Event Hub broadcast it as an event to it's 'listeners'. Let's listen to these events and act on the messages. For this, we need an Azure Function.
+
+Follow these steps to create an Azure Function App. An Azure function is actually a real function, a couple of lines of code, which is triggered by an event and it can output the result of the code to other services. Azure Functions run 'serverless': you just write and upload your code and only pay for the number of times it is executed, the compute time and the amount of memory used. Our Azure Function will be triggered by a new event in the Event Hub. The Azure Function app is the container of Azure Functions.
 
 1. On the left, select `Resource groups`. A list of resource groups is shown
 
@@ -308,8 +310,8 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 
     ![alt tag](img/azure-function-app-custom-function.png)
 
-10. Select at the bottom `Or create your own custom function` or press `New function` to the left
-11. We have to choose a template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select the `EventHubTrigger - C#` template
+10. Select at the bottom `Create your own custom function` or press `New function` to the left
+11. We have to choose a 'trigger' template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select the `EventHubTrigger - C#` template
 
     ![alt tag](img/azure-function-app-eventhubtrigger.png)
 
@@ -335,7 +337,7 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
     ![alt tag](img/azure-portal-create.png)
 
 21. The function and trigger are saved. The develop page is shown. In the middle, you will see the function in the 'Code' panel
-22. Press the `Logs` button to open the pane which shows some basic logging
+22. In the Logs pane, press the `arrow` (looking as a chevron) button to open that pane which shows some basic logging
 
     ![alt tag](img/azure-function-app-eventhubtrigger-logs.png)
 

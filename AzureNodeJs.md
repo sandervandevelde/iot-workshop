@@ -19,7 +19,7 @@ The Azure Function will execute custom code in the Cloud, bases on certain telem
 4. A running TTN bridge on your PC and connected to an IoT Hub (or a UWP app which represents the same devices, but connected to the IoT Hub directly)
 5. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in (created in the previous workshop)
 
-## Filter data in Stream Analytics and stream to event hub
+## Filter data by creating Stream Analytics Job and stream to an Event Hub
 
 ![alt tag](img/msft/Picture10-stream-data-to-an-event-hub.png)
 
@@ -232,7 +232,9 @@ Starting an Azure Stream Analytics job will take some time. After starting, all 
 
 ![alt tag](img/msft/Picture11handle-event-using-azure-functions.png)
 
-Follow these steps to create an Azure Function App. An Azure function is actually a real function, a couple of lines of code, which is triggered by certain events and it can output the result of the code to other services. Azure Functions run 'serverless': you just write and upload your code and only pay for the number of times it is executed, the compute time and the amount of memory used. Our Azure Function will be triggered by a new event in the Event Hub. The Azure Function app is the container of Azure Functions.
+Filtered and transformed messages now arrive at the Event Hub. Each time a message arrives, the Event Hub broadcast it as an event to it's 'listeners'. Let's listen to these events and act on the messages. For this, we need an Azure Function.
+
+Follow these steps to create an Azure Function App. An Azure function is actually a real function, a couple of lines of code, which is triggered by an event and it can output the result of the code to other services. Azure Functions run 'serverless': you just write and upload your code and only pay for the number of times it is executed, the compute time and the amount of memory used. Our Azure Function will be triggered by a new event in the Event Hub. The Azure Function app is the container of Azure Functions.
 
 1. On the left, select `Resource groups`. A list of resource groups is shown
 
@@ -304,16 +306,16 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 
     ![alt tag](img/azure-function-app-quickstart.png)
 
-9. Here you are invited to get started quickly with a premade function. Ignore this, we will create our own custom function by hand
+9. Here you are invited to get started quickly with a premade function. As you can see, JavaScript is already mentioned. But ignore these predefined functions, we will create our own custom function by hand
 
     ![alt tag](img/azure-function-app-custom-function.png)
 
-10. Select at the bottom `Or create your own custom function` or press `New function` to the left
-11. We have to choose a template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select the `EventHubTrigger - C#` template
+10. Select at the bottom `Create your own custom function` or press `New function` to the left
+11. We have to choose a 'trigger' template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select `JavaScript` in the language dropdown. Select the `EventHubTrigger - JavaScript` template
 
-    ![alt tag](img/azure-function-app-eventhubtrigger.png)
+    ![alt tag](img/azure-function-app-eventhubtrigger-javascript.png)
 
-12. At the bottom of the selected template page (use the scrollbar of the current page), you have to fill in the field 'Name your function'. Change `EventHubTriggerCSharp1` into `IoTWorkshopEventHubFunction`
+12. At the bottom of the selected template page (use the scrollbar of the current page), you have to fill in the field 'Name your function'. Change `EventHubTriggerJS1` into `IoTWorkshopEventHubFunction`
 13. In the field 'Event Hub name' you will have to pass the *remembered* name of the Event Hub eg. `iotworkshop-eh` *Note: in lower case*
 14. The 'Event Hub connection' field can be filled by pressing the `new` link
 15. A blade with an empty list of connection strings will be shown. Press `Add a connection string`
@@ -328,14 +330,14 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 18. Select `OK`
 19. The Connection string is now filled in into the corresponding field (Give the portal a moment to check the settings)
 
-    ![alt tag](img/azure-function-app-eventhubtrigger-new.png)
+    ![alt tag](img/azure-function-app-eventhubtrigger-new-javascript.png)
 
 20. Select `Create`
 
     ![alt tag](img/azure-portal-create.png)
 
 21. The function and trigger are saved. The develop page is shown. In the middle, you will see the function in the 'Code' panel
-22. Press the `Logs` button to open the pane which shows some basic logging
+22. In the Logs pane, press the `arrow` (looking as a chevron) button to open that pane which shows some basic logging
 
     ![alt tag](img/azure-function-app-eventhubtrigger-logs.png)
 
@@ -351,40 +353,17 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
     ```
 
 25. Select `Save`. The changed JavaScript code will be saved immediately *Note: you can press 'save and run', this will actually run the function, but an empty test message will be passed (check out the 'Test' option to the right for more details)*
-26. Double check the code, Javascript is not compiled in advance...
+26. Double check the code, Javascript is not compiled in advance. So no error message will appear here.
 
-Now we are confident, the Azure function and trigger are available.
+Now we are confident, the Azure function and trigger are available. 
+
+Actually, it should be possible that there are already events produced by the EventHub...
 
 ## Receiving telemetry in the Azure Function
 
-By now, the full chain of Azure services is set up. Telemetry from The Things Network node is passed by the bridge (or the test UWP app) to the Azure IoT Hub (as seen in one of the two explorers). Azure Stream Analytics passes a cumulation of the fault states to the Azure Function using an Azure Event Hub.
+By now, the full chain of Azure services is set up. Telemetry from JavaScript Simulation node is passed to the Azure IoT Hub (as seen in the explorer). Azure Stream Analytics passes a cumulation of the fault states to the Azure Function using an Azure Event Hub.
 
-So, if your TTN node or your UWP is put into a faulty state, telemetry will start arriving in the 'Logs' panel.
-
-### Sending TTN Node faults 
-
-The TTN node sends a message every 5 seconds. For now, it's passing work cycles.
-
-1. `Push` the button attach to the port and `hold` it until the LED is unlit. The machine is now in an 'error' state
-2. `Check out` the bridge. The node is not updating the cycles anymore and error 99 is passed
-
-    ![alt tag](img/azure/ttn-bridge-upling-errorstate.png)
-
-The TTN node now simulates a machine which has stopped working. If this error is passed several times within two minutes, this is picked up by Stream Analytics. Let's check out the Azure Function
-
-### Sending UWP app faults
-
-If you are using the UWP app as simulator for a node, you have to 'break' the machine by hand
-
-1. start the UWP app and press the `Break down` button. The UWP app simulates now a machine which has a certain fault status eg. '99'. *Note: the interface will show the title in red when the 'machine' is broken*
-
-    ![alt tag](img/azure-function-test-app-broken.png)
-    
-2. Press the `Send cycles updates` button to send the new telemetry. Press the button _multiple times_ within the same time frame of two minutes to match the query in Stream Analytics.
-
-    ![alt tag](img/azure-function-test-app-broken-telemetry.png)
-
-The UWP app now simulates a machine which has stopped working. If this error is passed several times within two minutes, this is picked up by Stream Analytics. Let's check out the Azure Function
+So, if your simulation is put into a faulty state (and it is, after 4 succesfull cycles, 'error 99' is raised), telemetry will start arriving in the 'Logs' panel.
 
 ## Receiving broken machines information in the Azure Function
 
@@ -394,10 +373,10 @@ Machine telemetry with an error state is arriving at the Azure IoTHub. The Azure
 
     ```
     2017-01-08T00:31:05.546 Function started (Id=b155de3d-c162-4fa4-a341-404ce83f5e84)
-    2017-01-08T00:31:05.546 IoT Workshop function triggered by message: [{"count":18,"deviceid":"MachineCyclesUwp"}]
+    2017-01-08T00:31:05.546 JavaScript processed message: [{"count":18,"deviceid":"MachineCyclesNodeJs"}]
     2017-01-08T00:31:05.546 Function completed (Success, Id=b155de3d-c162-4fa4-a341-404ce83f5e84)
     2017-01-08T00:32:05.152 Function started (Id=96b403f9-2152-48b6-8bc8-78058f53fca5)
-    2017-01-08T00:32:05.152 IoT Workshop function triggered by message: [{"count":24,"deviceid":"MachineCyclesUwp"}]
+    2017-01-08T00:32:05.152 JavaScript processed message: [{"count":24,"deviceid":"MachineCyclesNodeJs"}]
     2017-01-08T00:32:05.152 Function completed (Success, Id=96b403f9-2152-48b6-8bc8-78058f53fca5)
     ```
 
