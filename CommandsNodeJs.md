@@ -50,42 +50,51 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
 5. The Code panel is shown. The code of the function is shown. *Note: this code is saved in a file named run.scx*
 6. Change the current code into
 
-    ```csharp
-    using System;
-    using Microsoft.Azure.Devices;
-    using System.Text;
-    using Newtonsoft.Json; 
+    ```javascript
+    module.exports = function (context, myEventHubTrigger) {
+        context.log('Stream Analytics produced: ', myEventHubTrigger);
 
-    public static void Run(string myEventHubMessage, TraceWriter log)
-    {
-      log.Info($"Stream Analytics produced {myEventHubMessage}");  
+        var Client = require('azure-iothub').Client;
+        var Message = require('azure-iot-common').Message;
 
-      // Connect to IoT Hub   
-      var connectionString = "[IOT HUB connection string]";
-      var serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+        var connectionString = "[IoT Hub IoTHubOwner ConnectionString]";
+        var serviceClient = Client.fromConnectionString(connectionString);
     
-      // Send commands to all devices 
-      var messages = JsonConvert.DeserializeObject<StreamAnalyticsCommand[]>(myEventHubMessage);
+        function printResultFor(op) {
+            return function printResult(err, res) {
+                if (err) context.log(op + ' error: ' + err.toString());
+                if (res) context.log(op + ' status: ' + res.constructor.name);
+            };
+        }
 
-      log.Info($"{messages.Length} messages arrived.");
+        function receiveFeedback(err, receiver){
+            receiver.on('message', function (msg) {
+                context.log('Feedback message:')
+                context.log(msg.getData().toString('utf-8'));
+            });
+        }
 
-      foreach(var message in messages)
-      {
-        var bytes= new byte[1];
-        bytes[0] = 42; // restart the machine!
-        var commandMessage = new Message(bytes);
-        serviceClient.SendAsync(message.deviceid, commandMessage);
+        serviceClient.open(function (err) {
+            if (err) {
+                context.log('Could not connect: ' + err.message);
+            } else {
+                context.log('Service client connected');
+                serviceClient.getFeedbackReceiver(receiveFeedback);
 
-        // Log
-        log.Info($"Machine restart command processed after {message.count} errors for {message.deviceid}");
-      }
-    }
+                var message = new Message('*'); // * = ascii 42
 
-    public class StreamAnalyticsCommand
-    {
-      public string deviceid {get; set;}
-      public int count {get; set;}
-    }
+                context.log('Sending message: ' + message.getData());
+    
+                for(i = 0; i < myEventHubTrigger.length; i ++) {
+                    var targetDevice = myEventHubTrigger[i].deviceid;
+                    context.log('Sending message to: ' + targetDevice);
+                    serviceClient.send(targetDevice, message, printResultFor('send'));
+                }
+            }
+        });
+
+        context.done();
+    };
     ```
 
 7. Press the `Logs` button to open the pane which shows some basic logging
@@ -106,7 +115,7 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
 
     ![alt tag](img/commands/azure-function-app-view-files-pane-add.png)
 
-13. Name the new file `project.json`
+13. Name the new file `package.json`
 
     ![alt tag](img/commands/azure-function-app-view-files-pane-add-file.png)
 
@@ -115,16 +124,16 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
 
     ```json
     {
-      "frameworks": {
-        "net46": {
-          "dependencies": {
-            "Microsoft.AspNet.WebApi.Client": "5.2.3",
-            "Microsoft.AspNet.WebApi.Core": "5.2.3",
-            "Microsoft.Azure.Amqp": "1.1.5",
-            "Microsoft.Azure.Devices": "1.1.0",
-            "Newtonsoft.Json": "9.0.1"
-          }
-        }
+      "name": "azure-javascript-function",
+      "version": "1.0.0",
+      "description": "",
+      "main": "index.js",
+      "author": "",
+      "license": "",
+      "dependencies": {
+        "azure-iot-device": "^1.1.7",
+        "azure-iot-device-amqp": "^1.1.7",
+        "azure-iothub": "^1.1.7",
       }
     }
     ```
