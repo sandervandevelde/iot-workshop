@@ -16,9 +16,10 @@ The Azure Function will execute custom code in the Cloud, bases on certain telem
 1. A running TTN node connected to the TTN network
 2. Azure account [create here](https://azure.microsoft.com/en-us/free/) _([Azure passes](https://www.microsoftazurepass.com/howto) will be present for those who have no Azure account (please check your email for final confirmation))_
 3. An Azure IoT Hub (created in the previous workshop)
-4. A running IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in (created in the previous workshop)
+4. A running TTN bridge on your PC and connected to an IoT Hub (or a UWP app which represents the same devices, but connected to the IoT Hub directly)
+5. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in (created in the previous workshop)
 
-## Filter data by creating Stream Analytics Job and stream to an Event Hub
+## Filter data in Stream Analytics and stream to event hub
 
 ![alt tag](img/msft/Picture10-stream-data-to-an-event-hub.png)
 
@@ -305,16 +306,16 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 
     ![alt tag](img/azure-function-app-quickstart.png)
 
-9. Here you are invited to get started quickly with a premade function. As you can see, JavaScript is already mentioned. But ignore these predefined functions, we will create our own custom function by hand
+9. Here you are invited to get started quickly with a premade function. Ignore this, we will create our own custom function by hand
 
     ![alt tag](img/azure-function-app-custom-function.png)
 
 10. Select at the bottom `Create your own custom function` or press `New function` to the left
-11. We have to choose a 'trigger' template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select `JavaScript` in the language dropdown. Select the `EventHubTrigger - JavaScript` template
+11. We have to choose a 'trigger' template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select the `EventHubTrigger - C#` template
 
-    ![alt tag](img/azure-function-app-eventhubtrigger-javascript.png)
+    ![alt tag](img/azure-function-app-eventhubtrigger.png)
 
-12. At the bottom of the selected template page (use the scrollbar of the current page), you have to fill in the field 'Name your function'. Change `EventHubTriggerJS1` into `IoTWorkshopEventHubFunction`
+12. At the bottom of the selected template page (use the scrollbar of the current page), you have to fill in the field 'Name your function'. Change `EventHubTriggerCSharp1` into `IoTWorkshopEventHubFunction`
 13. In the field 'Event Hub name' you will have to pass the *remembered* name of the Event Hub eg. `iotworkshop-eh` *Note: in lower case*
 14. The 'Event Hub connection' field can be filled by pressing the `new` link
 15. A blade with an empty list of connection strings will be shown. Press `Add a connection string`
@@ -329,7 +330,7 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 18. Select `OK`
 19. The Connection string is now filled in into the corresponding field (Give the portal a moment to check the settings)
 
-    ![alt tag](img/azure-function-app-eventhubtrigger-new-javascript.png)
+    ![alt tag](img/azure-function-app-eventhubtrigger-new.png)
 
 20. Select `Create`
 
@@ -343,26 +344,41 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 23. A 'Logs' panel is shown. This 'Logs' panel works like a trace log.
 24. Update the code a bit, change the string in the log.Info() trace call eg.
 
-    ```javascript
-    module.exports = function (context, myEventHubTrigger) {
-        context.log('JavaScript processed message:', myEventHubTrigger);
+    ```csharp
+    using System;
 
-        context.done();
-    };
+    public static void Run(string myEventHubMessage, TraceWriter log)
+    {
+        log.Info($"IoT Workshop function triggered by message: {myEventHubMessage}");
+    }
     ```
 
-25. Select `Save`. The changed JavaScript code will be saved immediately *Note: you can press 'save and run', this will actually run the function, but an empty test message will be passed (check out the 'Test' option to the right for more details)*
-26. Double check the code, Javascript is not compiled in advance. So no error message will appear here.
+25. Select `Save`. The changed C# code will be recompiled immediately *Note: you can press 'save and run', this will actually run the function, but an empty test message will be passed (check out the 'Test' option to the right for more details)*
+26. In the 'Logs' panel, just below 'Code', `verify the outcome` of the compilation
 
-Now we are confident, the Azure function and trigger are available. 
+    ```
+    2017-01-08T00:14:24.981 Script for function 'IoTWorkshopEventHubFunction' changed. Reloading.
+    2017-01-08T00:14:25.122 Compilation succeeded.
+    ```
 
-Actually, it should be possible that there are already events produced by the EventHub...
+Now we are confident, the Azure function and trigger are available.
 
 ## Receiving telemetry in the Azure Function
 
-By now, the full chain of Azure services is set up. Telemetry from JavaScript Simulation node is passed to the Azure IoT Hub (as seen in the explorer). Azure Stream Analytics passes a cumulation of the fault states to the Azure Function using an Azure Event Hub.
+By now, the full chain of Azure services is set up. Telemetry from The Things Network node is passed by the bridge (or the test UWP app) to the Azure IoT Hub (as seen in one of the two explorers). Azure Stream Analytics passes a cumulation of the fault states to the Azure Function using an Azure Event Hub.
 
-So, if your simulation is put into a faulty state (and it is, after 4 succesfull cycles, 'error 99' is raised), telemetry will start arriving in the 'Logs' panel.
+So, if your TTN node is put into a faulty state (keep the button pressed untill a red led is shown), telemetry will start arriving in the 'Logs' panel, within a few minutes.
+
+### Sending TTN Node faults 
+
+The TTN node sends a message every 5 seconds. For now, it's passing work cycles.
+
+1. `Push` the button attach to the port and `hold` it until the LED is unlit. The machine is now in an 'error' state
+2. `Check out` the bridge. The node is not updating the cycles anymore and error 99 is passed
+
+    ![alt tag](img/azure/ttn-bridge-upling-errorstate.png)
+
+The TTN node now simulates a machine which has stopped working. If this error is passed several times within two minutes, this is picked up by Stream Analytics. Let's check out the Azure Function
 
 ## Receiving broken machines information in the Azure Function
 
@@ -372,10 +388,10 @@ Machine telemetry with an error state is arriving at the Azure IoTHub. The Azure
 
     ```
     2017-01-08T00:31:05.546 Function started (Id=b155de3d-c162-4fa4-a341-404ce83f5e84)
-    2017-01-08T00:31:05.546 JavaScript processed message: [{"count":18,"deviceid":"MachineCyclesNodeJs"}]
+    2017-01-08T00:31:05.546 IoT Workshop function triggered by message: [{"count":18,"deviceid":"MachineCyclesUwp"}]
     2017-01-08T00:31:05.546 Function completed (Success, Id=b155de3d-c162-4fa4-a341-404ce83f5e84)
     2017-01-08T00:32:05.152 Function started (Id=96b403f9-2152-48b6-8bc8-78058f53fca5)
-    2017-01-08T00:32:05.152 JavaScript processed message: [{"count":24,"deviceid":"MachineCyclesNodeJs"}]
+    2017-01-08T00:32:05.152 IoT Workshop function triggered by message: [{"count":24,"deviceid":"MachineCyclesUwp"}]
     2017-01-08T00:32:05.152 Function completed (Success, Id=96b403f9-2152-48b6-8bc8-78058f53fca5)
     ```
 
@@ -384,6 +400,6 @@ Notice that we have full control over telemetry. We know which device has sent f
 Receiving basic telemetry in Azure completes this part of the workshop. You are now ready to do something exciting with this telemetry. 
 
 1. Let's start passing commands back to actual devices or simulated devices
-    1. [Passing commands back to a NodeJs app device simulation](CommandsNodeJs.md)
+    1. [Passing commands back to a The Things Uno device](CommandsTTN.md)
 
 ![alt tag](img/logos/innovatos-digitalshockwaves-2017.png)

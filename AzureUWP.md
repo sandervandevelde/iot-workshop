@@ -16,8 +16,7 @@ The Azure Function will execute custom code in the Cloud, bases on certain telem
 1. A running TTN node connected to the TTN network
 2. Azure account [create here](https://azure.microsoft.com/en-us/free/) _([Azure passes](https://www.microsoftazurepass.com/howto) will be present for those who have no Azure account (please check your email for final confirmation))_
 3. An Azure IoT Hub (created in the previous workshop)
-4. A running TTN bridge on your PC and connected to an IoT Hub (or a UWP app which represents the same devices, but connected to the IoT Hub directly)
-5. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in (created in the previous workshop)
+4. A running Device Explorer connected to the IoT Hub, showing the telemetry coming in (created in the previous workshop)
 
 ## Filter data in Stream Analytics and stream to event hub
 
@@ -367,18 +366,7 @@ Now we are confident, the Azure function and trigger are available.
 
 By now, the full chain of Azure services is set up. Telemetry from The Things Network node is passed by the bridge (or the test UWP app) to the Azure IoT Hub (as seen in one of the two explorers). Azure Stream Analytics passes a cumulation of the fault states to the Azure Function using an Azure Event Hub.
 
-So, if your TTN node or your UWP is put into a faulty state, telemetry will start arriving in the 'Logs' panel.
-
-### Sending TTN Node faults 
-
-The TTN node sends a message every 5 seconds. For now, it's passing work cycles.
-
-1. `Push` the button attach to the port and `hold` it until the LED is unlit. The machine is now in an 'error' state
-2. `Check out` the bridge. The node is not updating the cycles anymore and error 99 is passed
-
-    ![alt tag](img/azure/ttn-bridge-upling-errorstate.png)
-
-The TTN node now simulates a machine which has stopped working. If this error is passed several times within two minutes, this is picked up by Stream Analytics. Let's check out the Azure Function
+So, if your UWP is put into a faulty state, telemetry will start arriving in the 'Logs' panel.
 
 ### Sending UWP app faults
 
@@ -414,8 +402,6 @@ Notice that we have full control over telemetry. We know which device has sent f
 Receiving basic telemetry in Azure completes this part of the workshop. You are now ready to do something exciting with this telemetry. 
 
 1. Let's start passing commands back to actual devices or simulated devices
-    1. [Passing commands back to a The Things Uno device](CommandsTTN.md)
-    2. [Passing commands back to a UWP app device simulation](CommandsUwp.md)
-    3. [Passing commands back to a NodeJs app device simulation](CommandsNodeJs.md)
+    1. [Passing commands back to a UWP app device simulation](CommandsUwp.md)
 
 ![alt tag](img/logos/innovatos-digitalshockwaves-2017.png)
