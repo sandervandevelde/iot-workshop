@@ -3,7 +3,7 @@
 
 This is an example of how downlink commands are sent back to a device. In this workshop, we will send commands back to faulty devices, using an Azure Function, to start them up again. 
 
-![alt tag](img/arch/azure-telemetry-pipeline-commands.png)
+![alt tag](img/arch/azure-telemetry-pipeline-commands-ttn.png)
 
 This part of the workshop supports the [TTN Node](TheThingsNetwork.md). 
 
