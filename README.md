@@ -40,7 +40,7 @@ The workshop consists of several chapters. The first two chapters will guide you
     3. [Connecting to an IoT Hub using a NodeJs (JavaScript) app device simulation](NodeJsToIotHub.md)
 2. Receiving and handling telemetry in Azure
     1. [Receiving and handling telemetry in Azure, sent by a TheThingsUno](AzureTTN.md)
-    1. [Receiving and handling telemetry in Azure, sent by a UWP app device simulation](AzureUwp.md)
+    1. [Receiving and handling telemetry in Azure, sent by a UWP app device simulation](AzureUWP.md)
     1. [Receiving and handling telemetry in Azure, sent by a NodeJs (JavaScript) app device simulation](AzureNodeJs.md)
 3. Passing commands back to actual devices or simulated devices
     1. [Passing commands back to a The Things Uno device](CommandsTTN.md)

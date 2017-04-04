@@ -330,6 +330,6 @@ To run the Device Explorer tool, double-click the DeviceExplorer.exe file in Win
 
 These messages shown during the monitoring step are now available in Azure, and kept in the IotHub until other resources are asking for telemetry...
 
-Next Step: You are now ready to process your data in an Azure Function. Continue to [Receivig and handling telemetry in Azure](AzureUwp.md)
+Next Step: You are now ready to process your data in an Azure Function. Continue to [Receiving and handling telemetry in Azure](AzureUWP.md)
 
 ![alt tag](img/logos/innovatos-digitalshockwaves-2017.png)

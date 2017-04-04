@@ -316,6 +316,6 @@ The cycle information is arriving.
 
 These messages shown during the monitoring step are now available in Azure, and kept in the IotHub until other resources are asking for telemetry...
 
-Next Step: You are now ready to process your data in an Azure Function. Continue to [Receivig and handling telemetry in Azure](AzureNodeJs.md)
+Next Step: You are now ready to process your data in an Azure Function. Continue to [Receiving and handling telemetry in Azure](AzureNodeJs.md)
 
 ![alt tag](img/logos/innovatos-digitalshockwaves-2017.png)
