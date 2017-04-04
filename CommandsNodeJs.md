@@ -27,7 +27,7 @@ At the end of this part of the workshop, the following steps are performed
 
 ![alt tag](img/msft/Picture12-connect-anything-using-flow.png)
 
-In the [previous workshop](Azure.md), we passed the telemetry from the device to a Stream Analytics job. This job collected devices which are sending error states. Every two minutes, information about devices that are in a faulty state are passed to an Azure Function.
+In the [previous workshop](AzureNodeJs.md), we passed the telemetry from the device to a Stream Analytics job. This job collected devices which are sending error states. Every two minutes, information about devices that are in a faulty state are passed to an Azure Function.
 
 In this workshop, we will react on these devices by sending them a command to 'repair themselves'. 
 
@@ -47,7 +47,7 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
 
     ![alt tag](img/commands/azure-functions-functions.png)
 
-5. The Code panel is shown. The code of the function is shown. *Note: this code is saved in a file named run.scx*
+5. The Code panel is shown. The code of the function is shown. *Note: this code is saved in a JavaScript file named index.js*
 6. Change the current code into
 
     ```javascript
@@ -97,27 +97,27 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
     };
     ```
 
-7. Press the `Logs` button to open the pane which shows some basic logging
+7. Press the `Logs` button at the bottom to open the pane which shows some basic logging
 
     ![alt tag](img/azure-function-app-eventhubtrigger-logs.png)
 
 8. A 'Logs' panel is shown. This 'Logs' panel works like a trace log.
 9. If you try to run this code, you will notice that compilation fails. This is not that surprising: we are using certain libraries that Azure Functions has no knowledge of. Yet!
-10. Press the `View Files` button to open the pane which shows a directory tree of all files.
+10. Press the `View Files` button to 'unfold' the pane which shows a directory tree of all files.
 
     ![alt tag](img/commands/azure-function-app-view-files.png)
 
-11. In the pane you can see that the file currently selected is: run.csx
+11. In the pane you can see that the file currently selected is: index.js
 
-    ![alt tag](img/commands/azure-function-app-view-files-pane.png)
+    ![alt tag](img/commands/azure-function-app-view-files-pane-nodejs.png)
 
 12. Add a new file by pressing `Add`
 
     ![alt tag](img/commands/azure-function-app-view-files-pane-add.png)
 
-13. Name the new file `package.json`
+13. Name the new file `project.json`
 
-    ![alt tag](img/commands/azure-function-app-view-files-pane-add-file.png)
+    ![alt tag](img/commands/azure-function-app-view-files-pane-add-file-nodejs.png)
 
 14. Press `Enter` to confirm the name of the file and an empty code editor will be shown for this file.
 15. The Project.json file describes which Nuget packages have to be referenced. Fill the editor with the following code 

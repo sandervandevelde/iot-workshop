@@ -27,7 +27,7 @@ At the end of this part of the workshop, the following steps are performed
 
 ![alt tag](img/msft/Picture12-connect-anything-using-flow.png)
 
-In the [previous workshop](Azure.md), we passed the telemetry from the device to a Stream Analytics job. This job collected devices which are sending error states. Every two minutes, information about devices that are in a faulty state are passed to an Azure Function.
+In the [previous workshop](AzureUWP.md), we passed the telemetry from the device to a Stream Analytics job. This job collected devices which are sending error states. Every two minutes, information about devices that are in a faulty state are passed to an Azure Function.
 
 In this workshop, we will react on these devices by sending them a command to 'repair themselves'. 
 
@@ -88,7 +88,7 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
     }
     ```
 
-7. Press the `Logs` button to open the pane which shows some basic logging
+7. Press the `Logs` button at the bottom to open the pane which shows some basic logging
 
     ![alt tag](img/azure-function-app-eventhubtrigger-logs.png)
 
