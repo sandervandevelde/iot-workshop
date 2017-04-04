@@ -3,7 +3,7 @@
 
 This is an example of how uplink messages from The Things Network can be handled in Azure. In this workshop, we will pass telemetry from your device to Azure Functions. *Note: passing back commands to your device will be added after this workshop* 
 
-![alt tag](img/arch/azure-telemetry-pipeline.png)
+![alt tag](img/arch/azure-telemetry-pipeline-uwp.png)
 
 Before connecting to Azure Functions, you will first add an Azure Stream Analytics job and Azure Event Hub.
 
