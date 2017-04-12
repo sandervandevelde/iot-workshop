@@ -550,7 +550,11 @@ This is the secret needed from the Azure IoT Hub.
 
 ![alt tag](img/msft/Picture08-build-a-bridge-frm-ttn-to-azure.png)
 
+Telemetry is arriving at the TTN portal. But we want to pass it on to the Azure IoT Platform. We need to build a 'bridge'.
+
 Follow these steps to create the integration bridge between The Things Network and Azure IoT Hub. 
+
+*Note: The bridge below is build using C# and will not run on non-windows devices. Use instead a bridge in the cloud as described in [Deploying The Things Network Bridge to Azure as a WebJob](Webjob.md)*
 
 1. **Create** a new folder eg. `c:\IoTWorkshop`
 2. **Copy** the zip file 'TTNAzureBridge.zip' from [this OneDrive location](https://aka.ms/workshopiot) to this folder and **unzip** it
