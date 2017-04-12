@@ -38,6 +38,7 @@ The workshop consists of several chapters. The first two chapters will guide you
     1. [Getting started with the The Things Uno device and The Things Network](TheThingsNetwork.md)
     2. [Connecting to an IoT Hub using a UWP app device simulation](UwpToIotHub.md)
     3. [Connecting to an IoT Hub using a NodeJs (JavaScript) app device simulation](NodeJsToIotHub.md)
+	4. [Connecting to an IoT Hub using a Java app device simulation](JavaToIotHub.md)
 2. Receiving and handling telemetry in Azure
     1. [Receiving and handling telemetry in Azure, sent by a TheThingsUno](AzureTTN.md)
     1. [Receiving and handling telemetry in Azure, sent by a UWP app device simulation](AzureUWP.md)

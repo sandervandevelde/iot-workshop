@@ -5,14 +5,14 @@ This is an example of how downlink commands are sent back to a device. In this w
 
 ![alt tag](img/arch/azure-telemetry-pipeline-commands.png)
 
-This part of the workshop supports both to the [TTN Node](TheThingsNetwork.md) and to the [UWP app](UwpToIotHub.md). 
+This part of the workshop supports both to the [TTN Node](TheThingsNetwork.md) and to the [NodeJs app](NodeJsToIotHub.md) and to the [Java app](JavaToIotHub.md). 
 
 *Note: In this workshop, we will create uniquely named Azure resources. The suggested names could be reserved already.*
 
 ### Prerequisites
 
 1. Azure account [create here](https://azure.microsoft.com/en-us/free/) _(Azure passes will be present for those who have no Azure account (please check your email for final confirmation))_
-2. a running NodeJs app which simulates a machine running duty cycles
+2. a running NodeJs or Java app which simulates a machine running duty cycles
 4. A combination of Azure IoT Hub, Stream Analytics job, Event Hub and Azure Function which are waiting for analyzed telemetry coming from the devices
 5. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in
 
