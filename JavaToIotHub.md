@@ -198,7 +198,7 @@ Now that you have registered a device, let's create the device which can submit 
 2. At your command prompt, `navigate` to the _simulated-device_ folder.
 3. Using a text editor, open the pom.xml file in the simulated-device folder and `add` the following dependencies to the dependencies node. This dependency enables you to use the iothub-java-client package in your app to communicate with your IoT hub and to serialize Java objects to JSON:
 
-	```javascript
+	```xml
 	<dependency>
 	  <groupId>com.microsoft.azure.sdk.iot</groupId>
 	  <artifactId>iot-device-client</artifactId>
