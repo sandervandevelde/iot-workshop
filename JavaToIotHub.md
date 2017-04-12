@@ -11,8 +11,8 @@ This is an example integration between a Java app and Azure IoT Hub. This integr
 ### Prerequisites
 
 1. A Windows 7+ or Linux or Mac computer with internet access
-2. JDK 8 [(http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Install instructions [here](https://github.com/Azure/azure-iot-sdk-java/blob/master/doc/java-devbox-setup.md#installjava).
-3. Maven [(https://maven.apache.org/download.cgi)](https://maven.apache.org/download.cgi). _(Maven 3 is recommended)_. Install instructions [here](https://github.com/Azure/azure-iot-sdk-java/blob/master/doc/java-devbox-setup.md#installmaven).
+2. [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). Install instructions [here](https://github.com/Azure/azure-iot-sdk-java/blob/master/doc/java-devbox-setup.md#installjava).
+3. [Maven software project management](https://maven.apache.org/download.cgi) _(Maven 3 is recommended)_. Install instructions [here](https://github.com/Azure/azure-iot-sdk-java/blob/master/doc/java-devbox-setup.md#installmaven).
 4. Azure account [create here](https://azure.microsoft.com/en-us/free/) _([Azure passes](https://www.microsoftazurepass.com/howto) will be present for those who have no Azure account (please check your email for final confirmation))_
 5. [IoT Hub Explorer](https://www.npmjs.com/package/iothub-explorer) _(for Command-Line interface based usage; see below for installation steps)_
 
