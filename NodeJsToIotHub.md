@@ -11,7 +11,7 @@ This is an example integration between a NodeJs app and Azure IoT Hub. This inte
 ### Prerequisites
 
 1. A Windows 7+ or Linux or Mac computer with internet access
-2. Node.js [https://nodejs.org/en/](https://nodejs.org/en/). _(We prefer Version 6)_
+2. [Node.js](https://nodejs.org/en/). _(We prefer Version 6)_
 3. Azure account [create here](https://azure.microsoft.com/en-us/free/) _([Azure passes](https://www.microsoftazurepass.com/howto) will be present for those who have no Azure account (please check your email for final confirmation))_
 4. [IoT Hub Explorer](https://www.npmjs.com/package/iothub-explorer) _(for Command-Line interface based usage; see below for installation steps)_
 
