@@ -45,9 +45,9 @@ Sending commands back to devices is a specific feature of the IoT Hub. The IoT H
 3. Select the Azure Function App `IoTWorkshop-fa`
 4. To the left, the current functions are shown. Select `IoTWorkshopEventHubFunction`
 
-    ![alt tag](img/commands/azure-functions-functions.png)
+    ![alt tag](img/function/azure-function-select.png)
 
-5. The Code panel is shown. The code of the function is shown. *Note: this code is saved in a file named run.scx*
+5. The Code panel is shown. The code of the function is shown. *Note: actually, this code is saved in a file named run.scx*
 6. Change the current code into
 
     ```csharp

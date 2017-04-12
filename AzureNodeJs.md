@@ -196,8 +196,10 @@ Follow these steps to write the query of Azure Stream Analytics job.
         hubinput timestamp by EventProcessedUtcTime
     WHERE
         errorCode <> 0
-    GROUP BY IoTHub.ConnectionDeviceId, TumblingWindow(Duration(minute, 2))
-    HAVING Count(errorCode) > 1 
+    GROUP BY 
+        IoTHub.ConnectionDeviceId, TumblingWindow(Duration(minute, 2))
+    HAVING 
+        Count(errorCode) > 1 
     ```
 
 4. This rather simple query will collect every two minutes all devices and the number of their messages when their telemetry shows more than one error *Note: See [Introduction to Stream Analytics Window functions](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions) for more information about the query language*
