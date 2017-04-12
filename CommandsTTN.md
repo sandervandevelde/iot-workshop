@@ -165,15 +165,69 @@ Now, the Azure Function is ready to receive data about devices which simulate 'f
 
 ![alt tag](img/msft/Picture05-submit-data-to-ttn.png)
 
-Let's check if your device in already in a faulty state and see how the Azure IoT Platforms sends back a command to repair it.
+Let's bring your device in a faulty state and see how the Azure IoT Platforms sends back a command to repair it.
 
-### Handle commands in the javascript Node.js app
+### Handle commands in the TTN Node
 
-The javascript client is instrumented to fall into an error state already, every fifth "completed cycle" message results in an error state. This will put the device in an error state.
+In [TTN Node](TheThingsNetwork.md), we assembled a TTN node and we put a sketch (source code) on it. Here we will add more logic to the node.
 
-Just wait for approx. two minutes and see how the error state arrives at the IoT Hub and within two minutes the command is generated to 'fix' the machine.
+1. Go back to the Arduino IDE and select the sketch
+2. Alter the sketch, Add the 'ttn.onMessage(handleCommand);' in the setup function:
 
-Again, after five successfull cycles, the app will generate another error state, which will eventually be fixed automatically.
+    ```c
+    // Initializing TTN communication...
+    ttn.onMessage(handleCommand); // new: Handle downlink
+    ttn.personalize(devAddr, nwkSKey, appSKey);
+    ```
+
+3. Every time a message is sent to the TTN backend, the node checks for commands. When a command is received, the handleCommand function will be called
+4. Add the extra function 'handleCommand' at the end of the sketch
+
+    ```c
+    void handleCommand(const byte* payload, size_t length, port_t port) {
+      if (length > 0) {
+        int command = payload[0];
+
+        if (command >= 42) {
+          errorCode = 0;
+          bar.setLed(1,0);
+          debugSerial.println("Machine repaired...");
+        }
+      }
+    } 
+    ```
+
+5. In the **Sketch** menu, click **Upload**. *Note: The sketch is uploaded and again telemetry will arrive at the TTN Portal, the TTN Azure bridge and the IoTHub*
+6. **Push** the button attached to the node and `hold` it until the LED is unlit. The 'machine' is now in an 'error' state
+7. **Check out** the bridge. The node is not updating the cycles anymore and error 99 is passed
+
+    ![alt tag](img/commands/TTN-Errors-arrive.png)
+
+8. After a few errors within two minutes (the same time frame Stream Analytics is checking), **Check out** the Azure Function. It will handle the event message.
+
+    ```
+    2017-01-13T14:09:17.188 Function started (Id=ed3a2175-33e6-4698-a76c-5831b2ea86a1)
+    2017-01-13T14:09:17.646 Stream Analytics produced [{"count":2,"deviceid":"predictive_maintenance_machine_42"}]
+    2017-01-13T14:09:17.724 1 messages arrived.
+    2017-01-13T14:09:17.833 Machine restart command processed after 2 errors for predictive_maintenance_machine_42
+    2017-01-13T14:09:17.833 Function completed (Success, Id=ed3a2175-33e6-4698-a76c-5831b2ea86a1)
+    ```
+
+9. **Check out** the bridge again. It will now handle the command (Downlink message) and send it to the TTN portal
+
+    ![alt tag](img/commands/TTN-Errors-arrive-at-bridge.png)
+
+10. **Check out** the TTN portal, the data pane. It will now handle the command (Downlink message) and send it to the device, one the first moment a new uplink message arrives
+
+    ![alt tag](img/commands/TTN-Errors-arrive-at-ttn.png)
+
+11. Finally, **check out** the logging of the node. The commands arrives and is handled by the function in the sketch
+
+    ![alt tag](img/commands/TTN-Errors-arrive-at-node.png)
+
+12. And in the end, the device will lit the light of the LED again. The 'machine' is now running again
+
+We have now gone full circle: the machine on hold (in an error state), simulated by the TTN Node, is running again and it's updating the machine cycles number again. And again, it's running without an error state.
 
 ## Conclusion
 
