@@ -11,7 +11,7 @@ In this chapter you will configure the The Things Uno with two sensors, connect 
 
 1. A computer with internet access
 2. A The Things Uno, a Grove - Water Sensor, a Grove - PIR Motion Sensor, wiring & a micro USB cable
-3. Arduino IDE [http://arduino.cc](http://arduino.cc)
+3. [Arduino IDE](https://www.arduino.cc/en/Main/Software)
 4. [Node.js](https://nodejs.org/en/). _(We prefer Version 6)_
 5. Azure account [create here](https://azure.microsoft.com/en-us/free/) _([Azure passes](https://www.microsoftazurepass.com/howto) will be present for those who have no Azure account (please check your email for final confirmation))_
 6. [TTN account](https://account.thethingsnetwork.org/)
