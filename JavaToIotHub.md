@@ -115,7 +115,7 @@ Each device that sends data to the IoT hub must be registered with a unique iden
 	   <groupId>com.microsoft.azure.sdk.iot</groupId>
 	   <artifactId>iot-service-client</artifactId>
 	   <version>1.2.17</version>
-	 </dependency>
+	</dependency>
 	```
 
 6. `Save` and close the pom.xml file.
