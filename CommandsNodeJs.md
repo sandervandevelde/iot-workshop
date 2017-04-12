@@ -14,7 +14,7 @@ This part of the workshop supports both to the [TTN Node](TheThingsNetwork.md) a
 1. Azure account [create here](https://azure.microsoft.com/en-us/free/) _(Azure passes will be present for those who have no Azure account (please check your email for final confirmation))_
 2. a running NodeJs or Java app which simulates a machine running duty cycles
 4. A combination of Azure IoT Hub, Stream Analytics job, Event Hub and Azure Function which are waiting for analyzed telemetry coming from the devices
-5. A running Device Explorer or IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in
+5. A running IoT Hub Explorer, connected to the IoT Hub, showing the telemetry coming in
 
 ### Steps to perform in this part of the workshop
 
@@ -27,7 +27,7 @@ At the end of this part of the workshop, the following steps are performed
 
 ![alt tag](img/msft/Picture12-connect-anything-using-flow.png)
 
-In the [previous workshop](AzureNodeJs.md), we passed the telemetry from the device to a Stream Analytics job. This job collected devices which are sending error states. Every two minutes, information about devices that are in a faulty state are passed to an Azure Function.
+In the [previous NodeJs chapter](AzureNodeJs.md), we passed the telemetry from the device to a Stream Analytics job. This job collected devices which are sending error states. Every two minutes, information about devices that are in a faulty state are passed to an Azure Function.
 
 In this workshop, we will react on these devices by sending them a command to 'repair themselves'. 
 
@@ -176,7 +176,6 @@ Just wait for approx. two minutes and see how the error state arrives at the IoT
 Again, after five successfull cycles, the app will generate another error state, which will eventually be fixed automatically.
 
 ## Conclusion
-
 
 Receiving commands from Azure completes the main part of the workshop.
 
