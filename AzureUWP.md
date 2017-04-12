@@ -280,7 +280,7 @@ Follow these steps to create an Azure Function App. An Azure function is actuall
 
 The portal will start creating the Function app. Once it is created, a notification is shown.
 
-## Create an Azure Function triggered by Event Hub
+## Create a C# Azure Function triggered by Event Hub
 
 Follow these steps to create an Azure Function, triggered by the Event Hub, inside the Azure Function App. 
 

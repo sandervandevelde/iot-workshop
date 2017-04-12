@@ -280,7 +280,7 @@ Follow these steps to create an Azure Function App. An Azure function is actuall
 
 The portal will start creating the Function app. Once it is created, a notification is shown.
 
-## Create an Azure Function triggered by Event Hub
+## Create an NodeJs Azure Function triggered by Event Hub
 
 Follow these steps to create an Azure Function, triggered by the Event Hub, inside the Azure Function App. 
 
@@ -290,71 +290,61 @@ Follow these steps to create an Azure Function, triggered by the Event Hub, insi
 
 2. Select the ResourceGroup `IoTWorkshop-rg`. It will open a new blade with all resources in this group
 3. Select the Azure Function App `IoTWorkshop-fa`
-4. If the Function App is not shown yet, `refresh` the list. The Function app resource will be shown in a new blade
+4. If the Function App is not shown yet, `refresh` the list. The Function app resource will be shown in a new blade *Note: Function Apps are quite new in the Azure portal and the interface is still frequently updated*
 
     ![alt tag](img/azure-portal-refresh.png)
 
-5. Select the `Function app settings` page
+5. The latest interface of Azure Functions is shown. On the left side, Select the `plus` to add a new function
 
-    ![alt tag](img/azure-function-app-settings.png)
+    ![alt tag](img/function/azure-function-add.png)
  
-6. As you can see, there are lot's of extra features regarding development, deployment and management
+6. The 'Quickstart' page is shown Here you are invited to get started quickly with a premade function. Ignore this, we will create our own custom function by hand
 
-    ![alt tag](img/azure-function-app-update.png)
+    ![alt tag](img/function/azure-function-quickstart.png)
 
-7. Keep the default settings. *Note: Function Apps are quite new in the Azure portal and the interface is still frequently updated* 
-8. Select the `Quickstart` page
-
-    ![alt tag](img/azure-function-app-quickstart.png)
-
-9. Here you are invited to get started quickly with a premade function. As you can see, JavaScript is already mentioned. But ignore these predefined functions, we will create our own custom function by hand
-
-    ![alt tag](img/azure-function-app-custom-function.png)
-
-10. Select at the bottom `Create your own custom function` or press `New function` to the left
-11. We have to choose a 'trigger' template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 60+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select `JavaScript` in the language dropdown. Select the `EventHubTrigger - JavaScript` template
+7. Select `Custom function` at the bottom 
+8. We have to choose a 'trigger' template. Azure Functions are triggered by events in Azure. A list of possible triggers will be shown. At this moment there are 65+ Bash, Batch, C#, F#, JavaScript, Php, Powershell, and Python triggers. Select `JavaScript` in the language dropdown. Select the `EventHubTrigger - JavaScript` template
 
     ![alt tag](img/azure-function-app-eventhubtrigger-javascript.png)
 
-12. At the bottom of the selected template page (use the scrollbar of the current page), you have to fill in the field 'Name your function'. Change `EventHubTriggerJS1` into `IoTWorkshopEventHubFunction`
-13. In the field 'Event Hub name' you will have to pass the *remembered* name of the Event Hub eg. `iotworkshop-eh` *Note: in lower case*
-14. The 'Event Hub connection' field can be filled by pressing the `new` link
-15. A blade with an empty list of connection strings will be shown. Press `Add a connection string`
+9. At the bottom of the selected template page (use the scrollbar of the current page), you have to fill in the field 'Name your function'. Change `EventHubTriggerJS1` into `IoTWorkshopEventHubFunction`
+10. In the field 'Event Hub name' you will have to pass the *remembered* name of the Event Hub eg. `iotworkshop-eh` *Note: in lower case*
+11. The 'Event Hub connection' field can be filled by pressing the `new` link
+12. A blade with an empty list of connection strings will be shown. Press `Add a connection string`
 
     ![alt tag](img/azure-function-app-add-connectionstring.png)
 
-16. In a new blade, enter some name in the 'Connection name' field eg. `RootManageSharedAccessKey`. A green sign will be shown if the name is correct
-17. In the 'Connection string' field you will have to pass the *remembered* `Connection String-Primary Key` of the Event Hub namespace connection string. A green sign will be shown if the name is correct
+13. In a new blade, enter some name in the 'Connection name' field eg. `RootManageSharedAccessKey`. A green sign will be shown if the name is correct
+14. In the 'Connection string' field you will have to pass the *remembered* `Connection String-Primary Key` of the Event Hub namespace connection string. A green sign will be shown if the name is correct
 
     ![alt tag](img/azure-function-app-connectionstring.png)
 
-18. Select `OK`
-19. The Connection string is now filled in into the corresponding field (Give the portal a moment to check the settings)
+15. Select `OK`
+16. The Connection string is now filled in into the corresponding field (Give the portal a moment to check the settings)
 
     ![alt tag](img/azure-function-app-eventhubtrigger-new-javascript.png)
 
-20. Select `Create`
+17. Select `Create`
 
     ![alt tag](img/azure-portal-create.png)
 
-21. The function and trigger are saved. The develop page is shown. In the middle, you will see the function in the 'Code' panel
-22. In the Logs pane, press the `arrow` (looking as a chevron) button to open that pane which shows some basic logging
+18. The function and trigger are saved. The develop page is shown. In the middle, you will see the function in the 'Code' panel
+19. In the Logs pane, press the `arrow` (looking as a chevron) button to open that pane which shows some basic logging
 
     ![alt tag](img/azure-function-app-eventhubtrigger-logs.png)
 
-23. A 'Logs' panel is shown. This 'Logs' panel works like a trace log.
-24. Update the code a bit, change the string in the log.Info() trace call eg.
+20. A 'Logs' panel is shown. This 'Logs' panel works like a trace log.
+21. Update the code a bit, change the string in the log.Info() trace call eg.
 
     ```javascript
     module.exports = function (context, myEventHubTrigger) {
         context.log('JavaScript processed message:', myEventHubTrigger);
-
         context.done();
     };
     ```
 
-25. Select `Save`. The changed JavaScript code will be saved immediately *Note: you can press 'save and run', this will actually run the function, but an empty test message will be passed (check out the 'Test' option to the right for more details)*
-26. Double check the code, Javascript is not compiled in advance. So no error message will appear here.
+22. Select `Save`. The changed JavaScript code will be saved immediately *Note: you can press 'save and run', this will actually run the function, but an empty test message will be passed (check out the 'Test' option to the right for more details)*
+23. Double check the code, Javascript is not compiled in advance. So no error message will appear here.
 
 Now we are confident, the Azure function and trigger are available. 
 
