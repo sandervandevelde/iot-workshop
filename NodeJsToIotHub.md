@@ -120,8 +120,8 @@ npm install azure-iothub
 var iothub = require('azure-iothub');
 var connStr = '<IOT-HUB-CONNECTION-STRING>';
 var registry = iothub.Registry.fromConnectionString(connStr);
-var device = new iothubDevice(null);
-device.deviceId = 'MachineCyclesNodeJs';
+var device = new iothub.Device(null);
+device.deviceId = ;
 
 registry.create(device, function(err, deviceInfo, res) {
   if (err) {
