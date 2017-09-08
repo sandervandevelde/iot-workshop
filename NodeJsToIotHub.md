@@ -121,7 +121,7 @@ var iothub = require('azure-iothub');
 var connStr = '<IOT-HUB-CONNECTION-STRING>';
 var registry = iothub.Registry.fromConnectionString(connStr);
 var device = new iothub.Device(null);
-device.deviceId = ;
+device.deviceId = 'MachineCyclesNodeJs';
 
 registry.create(device, function(err, deviceInfo, res) {
   if (err) {
